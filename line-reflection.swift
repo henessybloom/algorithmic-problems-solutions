@@ -28,14 +28,15 @@ func isReflected(_ points: [[Int]]) -> Bool {
     }
     
     // Находим точку отражения
-    let summ = minX + maxX
+    let reflectionPoint = Double(minX + maxX) / 2.0
     
     // Проверяем, что для каждой точки существует зеркальная точка
     for point in points {
         let x = point[0]
         let y = point[1]
+        let mirrorX = Int(reflectionPoint - (Double(x) - reflectionPoint))
         
-        if !seen.contains(PlanePoint(x: summ - x, y: y)) {
+        if !seen.contains(PlanePoint(x: mirrorX, y: y)) {
             return false
         }
     }
