@@ -1,42 +1,41 @@
-// General Idea : Iterate through nums and every time we see a zero, we count ones on the left and right of it. If we never see a zero, return 'nums.count - 1'
+//Key Idea: Maintaining a window with at most one zero by tracking consecutive ones before and after the zero.
+
 class Solution {
-    private func countAdjacentOnes(_ idx: Int, _ nums: [Int]) -> Int {
-        var left = idx - 1
-        var right = idx + 1
-        var onesOnTheLeft = 0
-        var onesOnTheRight = 0
-
-        while left >= 0, nums[left] != 0 {
-            onesOnTheLeft += 1
-            left -= 1
-        }
-        
-        while right < nums.count, nums[right] != 0 {
-            onesOnTheRight += 1
-            right += 1
-        }
-
-        return onesOnTheLeft + onesOnTheRight
-    }
-
     func longestSubarray(_ nums: [Int]) -> Int {
         guard nums.count > 1 else {
             return 0
         }
+        
+        var ans = 0
+        var zerosCnt = 0
+        var leftSum = 0
+        var rightSum = 0
 
-        var allOnes = true
-        var idx = 0
-        var result = 0
+        for i in 0..<nums.count {
+            if nums[i] == 1 {
+                if zerosCnt == 0 {
+                    leftSum += 1
+                }
 
-        while idx < nums.count {
-            if nums[idx] == 0 {
-                allOnes = false
-                result = max(countAdjacentOnes(idx, nums), result)
+                if zerosCnt == 1 {
+                    rightSum += 1
+                }
             }
 
-            idx += 1
+            if nums[i] == 0 {
+                zerosCnt += 1
+
+                if zerosCnt == 2 {
+                    ans = max(ans, leftSum + rightSum)
+                    leftSum = rightSum
+                    rightSum = 0
+                    zerosCnt = 1
+                }
+            }
         }
 
-        return allOnes ? nums.count - 1 : result
+        ans = max(ans, leftSum + rightSum)
+
+        return zerosCnt == 0 ? nums.count - 1 : ans
     }
 }
