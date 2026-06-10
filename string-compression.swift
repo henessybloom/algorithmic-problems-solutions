@@ -1,16 +1,15 @@
-// Key Idea: Compressing consecutive character groups in-place using two pointers to achieve constant space complexity.
-
-import Foundation
-
 class Solution {
-    func compressed(_ char: Character?, _ count: inout Int) -> String {
+    private func compressed(_ char: Character?, _ count: inout Int) -> [Character] {
         guard let char else {
-            return ""
+            return []
         }
-        
-        var ans = String(char)
+
+        var ans: [Character] = []
+
+        ans.append(char)
+
         if count > 1 && count < 10 {
-            ans += "\(count)"
+            ans.append(Character("\(count)"))
         } else if count >= 10 {
             var digits = ""
 
@@ -21,7 +20,7 @@ class Solution {
             }
 
             while let last = digits.popLast() {
-                ans += String(last)
+                ans.append(last)
             }
         }
 
@@ -29,9 +28,10 @@ class Solution {
     }
     
     func compress(_ chars: inout [Character]) -> Int {
-        var s = ""
         var lastChar: Character?
         var currentCharCount = 0
+        var writePointer = 0
+        var ans = 0
 
         for i in 0..<chars.count {
             if let _ = lastChar {
@@ -39,9 +39,10 @@ class Solution {
                     currentCharCount += 1
                 } else {
                     let compressed = compressed(lastChar, &currentCharCount)
-                    s += compressed
-                    currentCharCount = 1
                     lastChar = chars[i]
+                    currentCharCount = 1
+                    chars[writePointer..<(writePointer + compressed.count)] = compressed[0..<compressed.count]
+                    writePointer += compressed.count
                 }
             } else {
                 lastChar = chars[i]
@@ -49,16 +50,13 @@ class Solution {
             }
 
             if i == chars.count - 1 {
-                let compressed = compressed(lastChar, &currentCharCount)
-                s += compressed
+                let compressed = compressed(lastChar,  &currentCharCount)
+                chars[writePointer..<(writePointer + compressed.count)] = compressed[0..<compressed.count]
+                writePointer += compressed.count
             }
         }
-        
-        chars.insert(
-            contentsOf: Array(s),
-            at: 0
-        )
-        
-        return s.count
+
+        return writePointer
     }
 }
+
