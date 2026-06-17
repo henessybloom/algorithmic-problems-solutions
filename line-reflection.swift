@@ -1,3 +1,5 @@
+//Key Idea: The only possible vertical line of reflection sits halfway between the smallest and largest x-coordinates, so check that every point has its mirror twin in the set.
+
 import Foundation
 
 struct PlanePoint: Hashable {

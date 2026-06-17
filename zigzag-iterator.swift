@@ -1,3 +1,5 @@
+//Key Idea: Use two alternating queues so each `next()` pulls a vector from one queue, takes its current element, and re-queues it into the other — naturally interleaving values across all input vectors.
+
 protocol Queue {
     associatedtype Element
     func dequeue() -> Element?

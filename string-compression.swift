@@ -1,3 +1,5 @@
+//Key Idea: Use a write pointer to overwrite the array in place with each character followed by its repeat count (when greater than one), so compression happens without extra storage.
+
 class Solution {
     private func compressed(_ char: Character?, _ count: inout Int) -> [Character] {
         guard let char else {

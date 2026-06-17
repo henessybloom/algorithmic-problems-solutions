@@ -1,3 +1,5 @@
+//Key Idea: Iterate through the sorted numbers grouping consecutive values into one range, and flush the current range whenever the next number breaks the +1 sequence.
+
 class Solution {
     func produceString(_ nums: [Int]) -> String {
         guard nums.count > 1 else {

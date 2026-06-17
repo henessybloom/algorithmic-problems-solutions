@@ -1,3 +1,5 @@
+//Key Idea: As you walk through the array, store each number's index in a hashmap so you can instantly check whether the complement needed to reach the target has already been seen.
+
 class Solution {
     func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
         var map: [Int: Int] = [:]

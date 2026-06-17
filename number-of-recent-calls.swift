@@ -1,3 +1,5 @@
+//Key Idea: Keep a queue of recent timestamps and drop any that fall outside the last 3000ms window, so the queue size after each ping is the answer.
+
 import Foundation
 
 class RecentCounter {

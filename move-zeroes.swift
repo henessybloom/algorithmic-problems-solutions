@@ -1,3 +1,4 @@
+//Key Idea: Use two pointers — one scans the array while the other marks where the next non-zero should land, swapping non-zeros forward so all zeros end up at the back.
 
 class Solution {
     func moveZeroes(_ nums: inout [Int]) {

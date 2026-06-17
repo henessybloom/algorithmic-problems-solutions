@@ -13,6 +13,8 @@
  *     }
  * }
  */
+//Key Idea: A tree is symmetric when its left and right subtrees mirror each other, so recursively compare the outer pair (left.left vs right.right) and inner pair (left.right vs right.left).
+
 class Solution {
     private func check(_ left: TreeNode?, _ right: TreeNode?) -> Bool {
         if left == nil && right == nil { return true }

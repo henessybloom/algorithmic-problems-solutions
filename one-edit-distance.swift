@@ -1,3 +1,5 @@
+//Key Idea: Scan both strings together and tolerate exactly one mismatch — if lengths differ by one, skip a character in the longer string; otherwise, allow a single replacement.
+
 import Foundation
 
 class Solution {

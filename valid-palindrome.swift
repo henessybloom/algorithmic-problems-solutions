@@ -1,3 +1,4 @@
+//Key Idea: Strip the string down to lowercase alphanumeric characters, then use two pointers moving inward from both ends, comparing them step by step.
 
 import Foundation
 

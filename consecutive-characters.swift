@@ -1,3 +1,5 @@
+//Key Idea: Walk through the string counting the current run of identical characters, resetting the counter whenever the character changes, and keep the largest run seen.
+
 class Solution {
     func maxPower(_ s: String) -> Int {
         guard s.count > 1 else {
