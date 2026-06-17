@@ -25,7 +25,7 @@ class Solution {
         while j >= 0 {
             nums1[write] = nums2[j]
             j -= 1
-            write -= 1
+            writel -= 1
         }
     }
 }
