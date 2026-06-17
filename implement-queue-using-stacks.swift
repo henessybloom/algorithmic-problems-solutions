@@ -1,3 +1,4 @@
+// Key Idea : Implement a queue, using double stack implementation. When element is enqueued, append it to the right stack. When element is dequeued, reverse the right stack, assign it to the left stack and return last element of the left stack.
 
 class MyQueue {
 
