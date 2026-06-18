@@ -1,11 +1,9 @@
+// Key Idea: Use two hash tables to store symbols as keys and their count as values. Then iterate through one of the hash tables' keys, and see if a certain key also exists in the other hash table. If it does, then its the intersection and we add it to resulting array as little times as possible
+
 import Foundation
 
 class Solution {
     func intersect(_ nums1: [Int], _ nums2: [Int]) -> [Int] {
-        if nums1.count > nums2.count {
-            return intersect(nums2, nums1)
-        }
-
         var nums1Table: [Int: Int] = [:]
         var nums2Table: [Int: Int] = [:]
         var ans: [Int] = []
