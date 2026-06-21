@@ -1,3 +1,5 @@
+// Key Idea: Apply a regular column addition from arithmetic. I fucking hate String.Index
+
 class Solution {
     private func add(
         _ num1: String,
