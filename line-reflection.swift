@@ -1,48 +1,30 @@
-//Key Idea: The only possible vertical line of reflection sits halfway between the smallest and largest x-coordinates, so check that every point has its mirror twin in the set.
-
-import Foundation
-
 struct PlanePoint: Hashable {
-    let x: Int
-    let y: Int
+    let x, y: Int
 }
 
-// MARK: - Line Reflection
-func isReflected(_ points: [[Int]]) -> Bool {
-    var minX = Int.max
-    var maxX = -Int.max
-    var seen: Set<PlanePoint> = []
-    
-    // Находим минимальный и максимальный x, а также строим хеш-таблицу с входными точками
-    for point in points {
-        let x = point[0]
-        let y = point[1]
+class Solution {
+    func lineReflection(_ points: [[Int]]) -> Bool {
+        var minX = Int.max / 2
+        var maxX = -Int.max / 2
+        var seen = Set<PlanePoint>()
         
-        minX = min(minX, x)
-        maxX = max(maxX, x)
-        
-        seen.insert(
-            PlanePoint(
-                x: x,
-                y: y
-            )
-        )
-    }
-    
-    // Находим точку отражения
-    let reflectionPoint = Double(minX + maxX) / 2.0
-    
-    // Проверяем, что для каждой точки существует зеркальная точка
-    for point in points {
-        let x = point[0]
-        let y = point[1]
-        let mirrorX = Int(reflectionPoint - (Double(x) - reflectionPoint))
-        
-        if !seen.contains(PlanePoint(x: mirrorX, y: y)) {
-            return false
+        for point in points {
+            let point = PlanePoint(x: point[0], y: point[1])
+            maxX = max(maxX, point.x)
+            minX = min(minX, point.x)
+            seen.insert(point)
         }
+        
+        let sum = minX + maxX
+        
+        for point in points {
+            let point = PlanePoint(x: sum - point[0], y: point[1])
+            
+            if !seen.contains(point) {
+                return false
+            }
+        }
+        
+        return true
     }
-    
-    return true
 }
-
