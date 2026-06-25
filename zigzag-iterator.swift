@@ -1,98 +1,61 @@
-//Key Idea: Use two alternating queues so each `next()` pulls a vector from one queue, takes its current element, and re-queues it into the other — naturally interleaving values across all input vectors.
-
-protocol Queue {
-    associatedtype Element
-    func dequeue() -> Element?
-    func enqueue(_ element: Element)
-    var peek: Element? { get }
-    var isEmpty: Bool { get }
-}
-
-class QueueArray<Element>: Queue {
-    private var elements: [Element] = []
-    
-    func dequeue() -> Element? {
-        elements.isEmpty ? nil : elements.removeFirst()
-    }
-    
-    func enqueue(_ element: Element) {
-        elements.append(element)
-    }
-    
-    var peek: Element? {
-        elements.first
-    }
-    
-    var isEmpty: Bool {
-        elements.isEmpty
-    }
-}
-
-class ZigzagIterator {
+//Key Idea: Use two alternating queues so each `next()` pulls a vector from one queue, takes its current element, and re-queues it into the other. Maintain a single `i` pointer, which increments, whenever whichever queue goes empty. Only enqueue vector into another queue, if `i + 1 < vector.count` statement is valid for that vector, indicating, that vector can still produce values.
+class ZigZagIterator {
     private enum State {
         case first, second
     }
+    private var state: State = .first
+    private var vectors: [[Int]] = []
+    private var firstQueue: [[Int]] = []
+    private var secondQueue: [[Int]] = []
+    private var i = 0
     
-    private var idx = 0
-    private var queueState: State = .first
-    private var firstQueue = QueueArray<Array<Int>>()
-    private var secondQueue = QueueArray<Array<Int>>()
-    
-    init(_ vectors: [[Int]]) {
-        vectors.forEach { firstQueue.enqueue($0) }
+    init(vectors: [[Int]] = []) {
+        self.vectors = vectors
+        firstQueue.reserveCapacity(vectors.count)
+        secondQueue.reserveCapacity(vectors.count)
+        vectors.forEach { firstQueue.append($0) }
     }
     
-    func next() -> Int {
-        guard hasNext() else {
+    var hasNext: Bool {
+        !(firstQueue.isEmpty && secondQueue.isEmpty)
+    }
+    
+    func next() -> Int? {
+        guard hasNext else {
             print("All vectors are exhausted")
-            return Int.min
+            return nil
+        }
+        var ans: Int?
+        
+        switch state {
+        case .first:
+            guard let vector = firstQueue.first else {
+                return nil
+            }
+            firstQueue.removeFirst()
+            ans = vector[i]
+            if i + 1 < vector.count {
+                secondQueue.append(vector)
+            }
+            if firstQueue.isEmpty {
+                state = .second
+                i += 1
+            }
+        case .second:
+            guard let vector = secondQueue.first else {
+                return nil
+            }
+            secondQueue.removeFirst()
+            ans = vector[i]
+            if i + 1 < vector.count {
+                firstQueue.append(vector)
+            }
+            if secondQueue.isEmpty {
+                state = .first
+                i += 1
+            }
         }
         
-        switch queueState {
-        case .first:
-            while let vector = firstQueue.dequeue() {
-                if idx < vector.count {
-                    let element = vector[idx]
-                    
-                    if (idx + 1) < vector.count {
-                        secondQueue.enqueue(vector)
-                    }
-                    
-                    if firstQueue.isEmpty {
-                        idx += 1
-                        queueState = .second
-                    }
-                    
-                    return element
-                }
-            }
-            
-            print("All vectors are exhausted")
-            return Int.min
-        case .second:
-            while let vector = secondQueue.dequeue() {
-                if idx < vector.count {
-                    let element = vector[idx]
-                    
-                    if (idx + 1) < vector.count {
-                        firstQueue.enqueue(vector)
-                    }
-                    
-                    if secondQueue.isEmpty {
-                        idx += 1
-                        queueState = .first
-                    }
-                    
-                    return element
-                }
-            }
-            
-            print("All vectors are exhausted")
-            return Int.min
-        }
-    }
-    
-    func hasNext() -> Bool {
-        !(firstQueue.isEmpty && secondQueue.isEmpty)
+        return ans
     }
 }
