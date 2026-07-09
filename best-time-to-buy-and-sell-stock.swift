@@ -65,3 +65,16 @@ class Solution {
         return run(0, false, prices, &cache)
     }
 }
+
+// Key Idea: On each iteration calculate the new minimum buy price and the maximum possible profit. Unlike the previous solution, this one is also unscalable.
+class Solution {
+    func maxProfit(_ prices: [Int]) -> Int {
+        var minBuyPrice = Int.max / 2
+        var maxProfit = 0
+        for price in prices {
+            minBuyPrice = min(minBuyPrice, price)
+            maxProfit = max(maxProfit, price - minBuyPrice)
+        }
+        return maxProfit
+    }
+}
