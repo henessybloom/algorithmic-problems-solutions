@@ -1,3 +1,5 @@
+// Key Idea: Same exact idea, as in third variation of this problem, but instead of stopping when cnt equals 2, we stop, when cnt equals k
+
 struct CacheKey: Hashable {
     let idx: Int
     let taken: Bool
