@@ -1,3 +1,5 @@
+// Key Idea: Same idea, as in second variation of this problem, but when a transaction is made, we skip a day by passing 'idx + 2' instead of 'idx + 1'
+
 struct CacheKey: Hashable {
     let idx: Int
     let taken: Bool
