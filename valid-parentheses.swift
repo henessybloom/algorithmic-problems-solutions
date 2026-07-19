@@ -1,35 +1,23 @@
 //Key Idea: Push every opening bracket onto a stack and, when seeing a closing one, pop and check it matches — the string is valid only if every closer pairs up and the stack ends empty.
-
 class Solution {
     func isValid(_ s: String) -> Bool {
-        var closing = "}])"
-        var stack = Array<Character>()
-
-        for element in s {
-            guard closing.contains(element) else {
-                stack.append(element)
+        var stack: [Character] = []
+        let closing: Set<Character> = ["}", "]", ")"]
+        var i = s.startIndex
+        while i < s.endIndex {
+            guard closing.contains(s[i]) else {
+                stack.append(s[i])
+                i = s.index(after: i)
                 continue
             }
-
-            if let bracket = stack.popLast() {
-                if element == "}" {
-                    if bracket != "{" {
-                        return false
-                    }
-                } else if element == "]" {
-                    if bracket != "[" {
-                        return false
-                    }
-                } else {
-                    if bracket != "(" {
-                        return false
-                    }
-                }
-            } else {
+            guard let last = stack.popLast() else {
                 return false
             }
+            if last == "(" && s[i] != ")" { return false }
+            if last == "{" && s[i] != "}" { return false }
+            if last == "[" && s[i] != "]" { return false }
+            i = s.index(after: i)
         }
-
         return stack.isEmpty
     }
 }

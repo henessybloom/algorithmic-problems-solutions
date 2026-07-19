@@ -1,40 +1,29 @@
-//Key Idea: Iterate through the sorted numbers grouping consecutive values into one range, and flush the current range whenever the next number breaks the +1 sequence.
-
+//Key Idea: Iterate through an array and maintain left and right boundaries of each consecutive subsequence. When encountering an element, which is consecutive, update the right pointer(move it forward). When encountering an element, which isnt consecutive, compress the current left and right boundaries, add compressed string to a resulting array, and update left and right pointers.
 class Solution {
-    func produceString(_ nums: [Int]) -> String {
-        guard nums.count > 1 else {
-            return "\(nums[0])"
-        }
-
-        let min = nums[0]
-        let max = nums[nums.count - 1]
-
-        return "\(min)->\(max)"
-    }
-
     func summaryRanges(_ nums: [Int]) -> [String] {
         guard !nums.isEmpty else {
             return []
         }
-
-        var ans: [String] = []
-        var currentSet: [Int] = []
-
-        for i in 0..<nums.count {
-            let num = nums[i]
-            currentSet.append(num)
-
-            guard i + 1 < nums.count else {
-                ans.append(produceString(currentSet))
-                break
+        var result = [String]()
+        var left = nums[0]
+        var right = nums[0]
+        for i in 1..<nums.count {
+            if nums[i - 1] + 1 == nums[i] {
+                right = nums[i]
+                continue
             }
-
-            if nums[i + 1] != (num + 1) {
-                ans.append(produceString(currentSet))
-                currentSet = []
-            }
+            result.append(compress(left, right))
+            left = nums[i]
+            right = nums[i]
         }
+        result.append(compress(left, right))
+        return result
+    }
 
-        return ans
+    func compress(_ left: Int, _ right: Int) -> String {
+        guard left != right else {
+            return "\(left)"
+        }
+        return "\(left)->\(right)"
     }
 }

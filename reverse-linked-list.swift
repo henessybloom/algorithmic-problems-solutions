@@ -1,3 +1,4 @@
+// Key Idea: Reverse a list node by node, maintaining references to current and previous nodes
 /**
  * Definition for singly-linked list.
  * public class ListNode {
@@ -8,19 +9,16 @@
  *     public init(_ val: Int, _ next: ListNode?) { self.val = val; self.next = next; }
  * }
  */
-
-// Key Idea: Reverse a list node by node, maintaining references to current and previous nodes
 class Solution {
     func reverseList(_ head: ListNode?) -> ListNode? {
-        var previous: ListNode? = nil
+        var prev: ListNode? = nil
         var current = head
-
-        while let _ = current {
+        while current != nil {
             let next = current?.next
-            current?.next = previous
-            previous = current
+            current?.next = prev
+            prev = current
             current = next
         }
-        return previous
+        return prev
     }
 }
